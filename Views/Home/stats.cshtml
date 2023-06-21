@@ -1,0 +1,19 @@
+﻿@*
+
+<!-- Views/Home/Success.cshtml -->
+<h2>Tack för att du svarade!</h2>
+<!-- Visa en bekräftelse för användaren efter att formuläret har skickats -->
+*@
+
+@model List<QuestionViewModel>
+
+<h2>Alla svar</h2>
+
+@foreach (var question in Model)
+{
+    <div>
+        <p>Fråga 1: @question.IsInSweden</p>
+        <p>Fråga 2: @question.GoodDayDescription</p>
+        <p>Fråga 3: @question.FavoriteIceCream</p>
+    </div>
+}
