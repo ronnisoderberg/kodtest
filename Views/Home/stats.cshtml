@@ -1,19 +1,89 @@
-﻿@*
+﻿@model List<QuestionViewModel>
 
-<!-- Views/Home/Success.cshtml -->
-<h2>Tack för att du svarade!</h2>
-<!-- Visa en bekräftelse för användaren efter att formuläret har skickats -->
-*@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tack för att du svarade!</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-@model List<QuestionViewModel>
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-<h2>Alla svar</h2>
+        th {
+            background-color: #f2f2f2;
+        }
 
-@foreach (var question in Model)
-{
-    <div>
-        <p>Fråga 1: @question.IsInSweden</p>
-        <p>Fråga 2: @question.GoodDayDescription</p>
-        <p>Fråga 3: @question.FavoriteIceCream</p>
+        .container {
+            margin: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Tack för att du svarade!</h2>
+        <!-- Visa en bekräftelse för användaren efter att formuläret har skickats -->
+
+        <h2>Alla svar</h2>
+
+        <h3>Fråga 1</h3>
+        <div style="width: 200px; height: 100px;">
+            <canvas id="question1Chart"></canvas>
+        </div>
+
+        <h3>Fråga 2</h3>
+        <table>
+            <tr>
+                <th>Svar</th>
+            </tr>
+            @foreach (var question in Model)
+            {
+                <tr>
+                    <td>@question.GoodDayDescription</td>
+                </tr>
+            }
+        </table>
+
+        <h3>Fråga 3</h3>
+        <table>
+            <tr>
+                <th>Svar</th>
+            </tr>
+            @foreach (var question in Model)
+            {
+                <tr>
+                    <td>@question.FavoriteIceCream</td>
+                </tr>
+            }
+        </table>
     </div>
-}
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var question1Data = {
+                labels: ["Ja", "Nej"],
+                datasets: [{
+                    data: [@Model.Count(q => q.IsInSweden == true), @Model.Count(q => q.IsInSweden == false)],
+                    backgroundColor: ["green", "red"]
+                }]
+            };
+
+            var question1Chart = new Chart(document.getElementById("question1Chart"), {
+                type: 'pie',
+                data: question1Data
+            });
+        });
+    </script>
+</body>
+</html>

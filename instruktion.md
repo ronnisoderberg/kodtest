@@ -1,0 +1,5 @@
+Du behöver utveckla en enkel webbapplikation som kan användas för att besvara en enkät och visa resultaten av enkätundersökningen. Webbapplikationen ska bestå av två olika vyer. Den första vyn innehåller ett formulär med två eller fler frågor, till exempel en envalsfråga med hjälp av radioknappar, en flervalsfråga med hjälp av en checkboxlista eller en fritextfråga med hjälp av ett textfält. När användaren har fyllt i formuläret och skickat det, ska den andra vyn visas. Där visas sammanställningen av alla tidigare svar och det nya svaret på formuläret, i form av tabeller och diagram. Det ska också vara enkelt att växla mellan de två olika vyerna.
+
+ För att uppfylla kraven på användbarhet ska webbapplikationen vara responsiv och tillgänglig (tänk på WCAG). För att säkerställa kvaliteten på datainsamlingen ska validering finnas på formuläret, till exempel genom att göra en eller flera frågor obligatoriska att besvara.
+
+ Tekniskt sett ska webbapplikationen utvecklas i .NET 6.0 MVC med C#, och det är valfritt vilken datalagringsmetod som används.

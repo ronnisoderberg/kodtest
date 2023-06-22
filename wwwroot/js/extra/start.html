@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Form Generator</title>
+  </head>
+  <body>
+    <div id="form-container">
+      <div id="freeText">
+        <h3>skapa en textsvars fråga</h3>
+        <button onclick="generateQuestion_freeText()">Skapa</button>
+        <input type="text" id="question" value="Frågan" />
+        <input type="checkbox" id="mandatory" name="mandatory" />
+        <label for="mandatory"> Frågan obligatorisk</label>
+      </div>
+      <br />
+      <br />
+
+      <div id="radio">
+        <label for="radioNumberInput">Hur många radioknappar :</label>
+        <input type="number" id="radioNumberInput" min="1" />
+        <button onclick="generateInputFieldsRadio()">Generera</button>
+
+        <div id="radioInputFieldsContainer"></div>
+
+        <button onclick="convertToRadioButtons()">Skapa</button>
+      </div>
+
+      <div id="checkbox">
+        <label for="checkbocNumberInput">Hur många checkboxar :</label>
+        <input type="number" id="checkbocNumberInput" min="1" />
+        <button onclick="generateInputFieldsCheckbox()">Generera</button>
+
+        <div id="checkbocInputFieldsContainer"></div>
+
+        <button onclick="convertToCheckboxButtons()">Skapa</button>
+      </div>
+
+      <br />
+      <br />
+    </div>
+
+    <script>
+      function generateInputFieldsRadio() {
+        var radioNumberInput =
+          document.getElementById("radioNumberInput").value;
+        var radioInputFieldsContainer = document.getElementById(
+          "radioInputFieldsContainer"
+        );
+        radioInputFieldsContainer.innerHTML = ""; // Återställ innehållet
+
+        for (var i = 0; i < radioNumberInput; i++) {
+          var inputField = document.createElement("input");
+          inputField.type = "text";
+          inputField.name = "value" + i;
+
+          var label = document.createElement("label");
+          label.appendChild(document.createTextNode("Fält " + (i + 1)));
+          label.appendChild(inputField);
+
+          radioInputFieldsContainer.appendChild(label);
+        }
+      }
+      function generateInputFieldsCheckbox() {
+        var checkbocNumberInput = document.getElementById(
+          "checkbocNumberInput"
+        ).value;
+        var checkbocInputFieldsContainer = document.getElementById(
+          "checkbocInputFieldsContainer"
+        );
+        checkbocInputFieldsContainer.innerHTML = ""; // Återställ innehållet
+
+        for (var i = 0; i < checkbocNumberInput; i++) {
+          var inputField = document.createElement("input");
+          inputField.type = "text";
+          inputField.name = "value" + i;
+
+          var label = document.createElement("label");
+          label.appendChild(document.createTextNode("Fält " + (i + 1)));
+          label.appendChild(inputField);
+
+          checkbocInputFieldsContainer.appendChild(label);
+        }
+      }
+
+      function convertToCheckboxButtons() {
+        var input = document.getElementById("question").value;
+
+        const formContainer = document.getElementById("form-container");
+        var input = document.getElementById("question").value;
+
+        var checkbocInputFieldsContainer = document.getElementById(
+          "checkbocInputFieldsContainer"
+        );
+
+        var inputFields =
+          checkbocInputFieldsContainer.getElementsByTagName("input");
+
+        for (var i = 0; i < inputFields.length; i++) {
+          var inputValue = inputFields[i].value;
+
+          if (inputValue === "") {
+            alert("Fyll i alla fält innan du skapar!");
+            return;
+          }
+
+          var checkboxButton = document.createElement("input");
+          checkboxButton.type = "checkbox";
+          checkboxButton.name = "option";
+          checkboxButton.value = inputValue;
+
+          var label = document.createElement("label");
+          label.appendChild(checkboxButton);
+          label.appendChild(document.createTextNode(inputValue));
+
+          formContainer.appendChild(label);
+        }
+
+        const question = document.createElement("question");
+        question.textContent = input;
+        formContainer.appendChild(question);
+
+        checkbocInputFieldsContainer.innerHTML = ""; // Rensa inmatningsfälten
+      }
+
+      function convertToRadioButtons() {
+        var input = document.getElementById("question").value;
+
+        const formContainer = document.getElementById("form-container");
+        var input = document.getElementById("question").value;
+        var radioInputFieldsContainer = document.getElementById(
+          "radioInputFieldsContainer"
+        );
+
+        var inputFields =
+          radioInputFieldsContainer.getElementsByTagName("input");
+
+        for (var i = 0; i < inputFields.length; i++) {
+          var inputValue = inputFields[i].value;
+
+          if (inputValue === "") {
+            alert("Fyll i alla fält innan du skapar!");
+            return;
+          }
+
+          var radioButton = document.createElement("input");
+          radioButton.type = "radio";
+          radioButton.name = "option";
+          radioButton.value = inputValue;
+
+          var label = document.createElement("label");
+          label.appendChild(radioButton);
+          label.appendChild(document.createTextNode(inputValue));
+
+          formContainer.appendChild(label);
+        }
+
+        const question = document.createElement("question");
+        question.textContent = input;
+        formContainer.appendChild(question);
+
+        radioInputFieldsContainer.innerHTML = ""; // Rensa inmatningsfälten
+      }
+
+      function generateQuestion_freeText() {
+        let freeTextCounter = 0;
+        var input = document.getElementById("question").value;
+
+        const formContainer = document.getElementById("form-container");
+
+        const form = document.createElement("div");
+        form.id = `questionNr_${freeTextCounter}`;
+
+        let mandatory = document.getElementById("mandatory").checked;
+        if (mandatory) {
+          mandatory = document.createElement("p");
+          mandatory.textContent = "mandatory";
+        } else {
+          mandatory = document.createElement("p");
+          mandatory.textContent = "Ej mandatory";
+          mandatory.style.display = "none";
+        }
+
+        const question = document.createElement("question");
+        question.textContent = input;
+        const svarsFalt = document.createElement("input");
+        svarsFalt.type = "text";
+        svarsFalt.name = `questionNr_${freeTextCounter}`;
+
+        form.appendChild(question);
+        form.appendChild(svarsFalt);
+        form.appendChild(mandatory);
+
+        formContainer.appendChild(form);
+        freeTextCounter++;
+      }
+    </script>
+  </body>
+</html>
