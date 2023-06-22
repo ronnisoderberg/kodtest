@@ -16,3 +16,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+.readonly-input {
+    border: none;
+    background-color: transparent;
+}

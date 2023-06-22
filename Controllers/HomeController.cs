@@ -1,19 +1,56 @@
-﻿using kodTest.Services;
+﻿using kodtest.Models;
+using kodTest.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 public class HomeController : Controller
 {
-    private readonly DbContext _ctx;
+    private readonly kodTest.Services.DbContext _ctx;
 
-    public HomeController(DbContext ctx)
+    public HomeController(kodTest.Services.DbContext ctx)
     {
         _ctx = ctx;
     }
 
     public IActionResult Index()
     {
+        //var flavs = _ctx.Flavours.ToList();
         var model = new QuestionViewModel();
+        model.Flavours = new List<CheckBoxItem>();
+        var cb = new List<CheckBoxItem>();
+        cb.Add(new CheckBoxItem()
+        {
+            Title = "Jordgubb",
+            IsChecked = false,
+        });
+        cb.Add(new CheckBoxItem()
+        {
+            Title = "Choklad",
+            IsChecked = false,
+        });
+        cb.Add(new CheckBoxItem()
+        {
+            Title = "Vanilj",
+            IsChecked = false,
+        });
+        cb.Add(new CheckBoxItem()
+        {
+            Title = "Banan",
+            IsChecked = false,
+        });
+        model.Flavours = cb;
+
+        //flavs.ForEach(i =>
+        //{
+        //    model.Flavours.Add(new CheckBoxItem()
+        //    {
+        //        Id = i.Id,
+        //        Title = i.Title,
+        //        IsChecked = false
+        //    });
+        //});
         return View(model);
+        
     }
 
     [HttpPost]
@@ -25,7 +62,8 @@ public class HomeController : Controller
             {
                 IsInSweden = model.IsInSweden,
                 GoodDayDescription = model.GoodDayDescription,
-                FavoriteIceCream = model.FavoriteIceCream
+                Flavours = model.Flavours.Where(i => i.IsChecked == true).ToList()
+                //FavoriteIceCream = model.FavoriteIceCream
             };
 
             _ctx.Awnsers.Add(formData);
@@ -33,13 +71,14 @@ public class HomeController : Controller
 
             return RedirectToAction("Stats");
         }
-
+        //model.IsInSweden = model.IsInSweden == null ? false : true;
+        //model.FavoriteIceCream = null;
         return View(model);
     }
 
     public IActionResult Stats()
     {
-        var questions = _ctx.Awnsers.ToList(); // Hämta alla svar från databasen
+        var questions = _ctx.Awnsers.Include(i => i.Flavours).ToList(); // Hämta alla svar från databasen
 
         return View(questions);
     }

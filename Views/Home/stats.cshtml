@@ -1,4 +1,5 @@
-﻿@model List<QuestionViewModel>
+﻿@using kodtest.Models;
+@model List<QuestionViewModel>
 
 <!DOCTYPE html>
 <html>
@@ -59,12 +60,22 @@
             <tr>
                 <th>Svar</th>
             </tr>
+            @{
+                var k = new List<CheckBoxItem>();
+            }
             @foreach (var question in Model)
             {
-                <tr>
-                    <td>@question.FavoriteIceCream</td>
-                </tr>
+                k.AddRange(question.Flavours);
             }
+
+            @foreach (var f in k)
+            {
+            <tr>
+                <td>@f.Title</td>
+                <td>@k.Where(i => i.Title==f.Title).ToList().Count()</td>
+            </tr>
+            }
+
         </table>
     </div>
 

@@ -1,6 +1,7 @@
 ﻿@model QuestionViewModel
 @{
     Layout = null;
+    ViewBag.Title = "Index";
 }
 
 <!DOCTYPE html>
@@ -10,7 +11,11 @@
     <title>Frågeformulär</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <style>
-        
+        .readonly-input {
+            border: none;
+            background-color: transparent;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -38,26 +43,61 @@
         </div>
 
         <div class="my-4">
+            <table>
 
-            <label class="block font-semibold">Vilken glass gillar du?</label>
+                <div>
+
+            @for (int i = 0; i < Model.Flavours.Count; i++)
+            {
+                        <input type="checkbox" asp-for="@Model.Flavours[i].IsChecked" class="form-checkbox" />
+                        <label class="form-check-label" asp-for="@Model.Flavours[i].IsChecked" >
+                            @Model.Flavours[i].Title
+                        </label>
+
+                        <input type="hidden" asp-for="@Model.Flavours[i].Title" />
+                        <input type="hidden" asp-for="@Model.Flavours[i].Id" />                       
+                }
+                </div>
+
+              @*   <label class="inline-flex items-center">
+                <tr>
+                    <td>
+                        @Html.HiddenFor(x => Model.Flavours[i].Id)
+                     @Html.EditorFor(x => Model.Flavours[i].Title, new { htmlAttributes = new { @readonly = "readonly", @class = "readonly-input" } })
+                    </td>
+                    <td>
+                            <span class="ml-2">@Model.Flavours[i].Title</span>
+                            @Html.CheckBoxFor(x => x.Flavours[i].IsChecked, Model.Flavours[i].IsChecked)
+                   
+                    </td>
+                </tr>
+                 </label>                *@
+                       @*
+@*                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="@Model.Flavours[i].Title" value="@Model.Flavours[i].IsChecked" class="form-checkbox" />
+                              @*  <span class="ml-2">Vanilj</span>
+                            </label>*@
+
+            </table>
+@*            <label class="block font-semibold">Vilken glass gillar du?</label>
             <div>
                 <label class="inline-flex items-center">
-                    <input type="checkbox" asp-for="FavoriteIceCream" value="vanilj" class="form-checkbox" />
+                    <input type="checkbox" asp-for="FavoriteIceCream[0]" value="vanilj" class="form-checkbox" />
                     <span class="ml-2">Vanilj</span>
                 </label>
                 <label class="inline-flex items-center ml-4">
-                    <input type="checkbox" asp-for="FavoriteIceCream" value="jordgubb" class="form-checkbox" />
+                    <input type="checkbox" asp-for="FavoriteIceCream[1]" value="jordgubb" class="form-checkbox" />
                     <span class="ml-2">Jordgubb</span>
                 </label>
                 <label class="inline-flex items-center ml-4">
-                    <input type="checkbox" asp-for="FavoriteIceCream" value="choklad" class="form-checkbox" />
+                    <input type="checkbox" asp-for="FavoriteIceCream[2]" value="choklad" class="form-checkbox" />
                     <span class="ml-2">Choklad</span>
                 </label>
                 <label class="inline-flex items-center ml-4">
-                    <input type="checkbox" asp-for="FavoriteIceCream" value="banan" class="form-checkbox" />
+                    <input type="checkbox" asp-for="FavoriteIceCream[3]" value="banan" class="form-checkbox" />
                     <span class="ml-2">Banan</span>
                 </label>
-            </div>
+            </div>*@
         </div>
 
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Skicka</button>

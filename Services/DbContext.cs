@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using kodtest.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace kodTest.Services
 {
@@ -11,6 +12,8 @@ namespace kodTest.Services
         }
 
         public DbSet<QuestionViewModel> Awnsers { get; set; }
+
+        public DbSet<Flavour> Flavours { get; set; }
        
     }
 
