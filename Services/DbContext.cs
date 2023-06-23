@@ -16,6 +16,4 @@ namespace kodTest.Services
         public DbSet<Flavour> Flavours { get; set; }
        
     }
-
-    
 }

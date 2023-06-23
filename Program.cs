@@ -10,14 +10,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<DbSeed>();
 
 
-//var connectionString =
-//    "Server=(localdb)\\mssqllocaldb;" +
-//    "Database=KodTestDB";
+var connectionString =
+    "Server=(localdb)\\mssqllocaldb;" +
+    "Database=KodTestDB";
 builder.Services
     .AddDbContext<DbContext>(
         options =>
         {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+        options.UseSqlServer(connectionString);
         });
 
 var app = builder.Build();

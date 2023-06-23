@@ -14,41 +14,18 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        //var flavs = _ctx.Flavours.ToList();
+        var flavs = _ctx.Flavours.ToList();
         var model = new QuestionViewModel();
         model.Flavours = new List<CheckBoxItem>();
-        var cb = new List<CheckBoxItem>();
-        cb.Add(new CheckBoxItem()
+       
+        flavs.ForEach(i =>
         {
-            Title = "Jordgubb",
-            IsChecked = false,
+            model.Flavours.Add(new CheckBoxItem()
+            {
+                Title = i.Title,
+                IsChecked = false
+            });
         });
-        cb.Add(new CheckBoxItem()
-        {
-            Title = "Choklad",
-            IsChecked = false,
-        });
-        cb.Add(new CheckBoxItem()
-        {
-            Title = "Vanilj",
-            IsChecked = false,
-        });
-        cb.Add(new CheckBoxItem()
-        {
-            Title = "Banan",
-            IsChecked = false,
-        });
-        model.Flavours = cb;
-
-        //flavs.ForEach(i =>
-        //{
-        //    model.Flavours.Add(new CheckBoxItem()
-        //    {
-        //        Id = i.Id,
-        //        Title = i.Title,
-        //        IsChecked = false
-        //    });
-        //});
         return View(model);
         
     }
@@ -63,6 +40,9 @@ public class HomeController : Controller
                 IsInSweden = model.IsInSweden,
                 GoodDayDescription = model.GoodDayDescription,
                 Flavours = model.Flavours.Where(i => i.IsChecked == true).ToList()
+                //Flavours = model.Flavours.ToList()
+
+
                 //FavoriteIceCream = model.FavoriteIceCream
             };
 
