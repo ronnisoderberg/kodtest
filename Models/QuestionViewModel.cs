@@ -1,4 +1,3 @@
-// ViewModels/QuestionViewModel.cs
 using kodtest.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,7 +11,13 @@ public class QuestionViewModel
 
     [Required(ErrorMessage = "Vänligen beskriv en bra dag.")]
     public string GoodDayDescription { get; set; }
+    public List<string> Flavours { get; set; }
 
-    public List<CheckBoxItem>? Flavours { get; set; }
-    //public string FavoriteIceCream { get; set; }
+    public List<CheckBoxItem>? CheckBoxes { get; set; }
+
+    public QuestionViewModel()
+    {
+        CheckBoxes = new List<CheckBoxItem>();
+        Flavours = new List<string>();
+    }
 }

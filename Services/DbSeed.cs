@@ -14,85 +14,81 @@ namespace kodTest.Services
         public async Task Seed()
         {
 
-            //var Awnsers = new List<QuestionViewModel>()
-            //{
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = true,
-            //        GoodDayDescription = "En fantastisk dag!",
-            //        //FavoriteIceCream = "choklad"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = false,
-            //        GoodDayDescription = "En lugn dag i solen",
-
-            //        //FavoriteIceCream = "jordgubb"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = true,
-            //        GoodDayDescription = "En spännande dag med vänner",
-            //        FavoriteIceCream = "banan"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = false,
-            //        GoodDayDescription = "En mysig dag framför TV:n",
-            //        FavoriteIceCream = "vanilj"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = true,
-            //        GoodDayDescription = "En produktiv dag på jobbet",
-            //        FavoriteIceCream = "choklad, jordgubb"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = false,
-            //        GoodDayDescription = "En äventyrlig dag i naturen",
-            //        FavoriteIceCream = "choklad, banan"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = true,
-            //        GoodDayDescription = "En fartfylld dag på sportevenemanget",
-            //        FavoriteIceCream = "choklad, jordgubb, banan"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = false,
-            //        GoodDayDescription = "En festlig dag med massor av leenden",
-            //        FavoriteIceCream = "choklad, jordgubb, vanilj"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = true,
-            //        GoodDayDescription = "En trevlig dag med familjen",
-            //        FavoriteIceCream = "choklad, vanilj"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = true,
-            //        GoodDayDescription = "En romantisk dag med din partner",
-            //        FavoriteIceCream = "jordgubb, banan"
-            //    },
-            //    new QuestionViewModel
-            //    {
-            //        IsInSweden = true,
-            //        GoodDayDescription = "En rolig dag på nöjesparken",
-            //        FavoriteIceCream = "jordgubb, vanilj"
-            //    }
-
-            //};
-            var flavours = new List<Flavour>()
+            var Awnsers = new List<QuestionViewModel>()
             {
-                new Flavour() { Title = "Vanilj" },
-                new Flavour() { Title = "Choklad" },
-                new Flavour() { Title = "Päron" },
-                new Flavour() { Title = "Jordgubb" },
+                new QuestionViewModel
+                {
+                    IsInSweden = true,
+                    GoodDayDescription = "En fantastisk dag!",
+                    Flavours = {"Banan", "Chocklad"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = true,
+                    GoodDayDescription = "En spännande dag med vänner",
+                    Flavours = {"Banan", "Jordgubb"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = false,
+                    GoodDayDescription = "En mysig dag framför TV:n",
+                    Flavours = {"Banan"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = true,
+                    GoodDayDescription = "En produktiv dag på jobbet",
+                    Flavours ={"Chocklad"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = false,
+                    GoodDayDescription = "En äventyrlig dag i naturen",
+                    Flavours = {"Banan", "Vanilj","Jordgubb","Chocklad"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = true,
+                    GoodDayDescription = "En fartfylld dag på sportevenemanget",
+                    Flavours = {"Vanilj"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = false,
+                    GoodDayDescription = "En festlig dag med massor av leenden",
+                    Flavours = {"Banan", "Jordgubb"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = true,
+                    GoodDayDescription = "En trevlig dag med familjen",
+                    Flavours = {"Banan", "Jordgubb"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = true,
+                    GoodDayDescription = "En romantisk dag med din partner",
+                    Flavours = {"Banan", "Jordgubb"}
+                },
+                new QuestionViewModel
+                {
+                    IsInSweden = true,
+                    GoodDayDescription = "En rolig dag på nöjesparken",
+                    Flavours = {"Banan", "Jordgubb"}
+                }
+
             };
-            await _ctx.AddRangeAsync(flavours);
+
+        var setFlavours = new List<Flavour>()
+            {
+                new Flavour() { Title = "Jordgubb" },
+                new Flavour() { Title = "Vanilj" },
+                new Flavour() { Title = "Jordgubb" },
+                new Flavour() { Title = "Chocklad" },
+            };
+            await _ctx.AddRangeAsync(setFlavours);
+            await _ctx.AddRangeAsync(Awnsers);
+
 
             await _ctx.SaveChangesAsync();
         }

@@ -1,7 +1,6 @@
 ﻿using kodtest.Models;
-using kodTest.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 public class HomeController : Controller
 {
@@ -14,53 +13,78 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var flavs = _ctx.Flavours.ToList();
-        var model = new QuestionViewModel();
-        model.Flavours = new List<CheckBoxItem>();
-       
-        flavs.ForEach(i =>
-        {
-            model.Flavours.Add(new CheckBoxItem()
+       var flavs = _ctx.Flavours.ToList();
+            var model = new QuestionViewModel();
+            model.CheckBoxes = new List<CheckBoxItem>();
+
+            flavs.ForEach(i =>
             {
-                Title = i.Title,
-                IsChecked = false
+                model.CheckBoxes.Add(new CheckBoxItem()
+                {
+                    Title = i.Title,
+                    IsChecked = false
+                });
             });
-        });
-        return View(model);
-        
-    }
+            return View(model);
+        }
 
     [HttpPost]
     public IActionResult Index(QuestionViewModel model)
     {
-        if (ModelState.IsValid)
+
+        if (!ModelState.IsValid)
         {
+            return View(model);
+        }
+        
+
+            var favFlavs = model.CheckBoxes.Where(x => x.IsChecked).ToList();
+
             var formData = new QuestionViewModel()
             {
                 IsInSweden = model.IsInSweden,
                 GoodDayDescription = model.GoodDayDescription,
-                Flavours = model.Flavours.Where(i => i.IsChecked == true).ToList()
-                //Flavours = model.Flavours.ToList()
+                CheckBoxes = model.CheckBoxes.Where(x => x.IsChecked).ToList(),
+                Flavours = favFlavs.Select(x => x.Title).ToList()
 
 
-                //FavoriteIceCream = model.FavoriteIceCream
             };
 
             _ctx.Awnsers.Add(formData);
             _ctx.SaveChanges();
 
             return RedirectToAction("Stats");
-        }
-        //model.IsInSweden = model.IsInSweden == null ? false : true;
-        //model.FavoriteIceCream = null;
-        return View(model);
+        
+     
     }
 
     public IActionResult Stats()
     {
-        var questions = _ctx.Awnsers.Include(i => i.Flavours).ToList(); // Hämta alla svar från databasen
 
-        return View(questions);
+        
+
+
+        var awnsers = _ctx.Awnsers.ToList();
+
+        var test = _ctx.Flavours.ToList();
+
+
+
+        var unicFlavs = awnsers.SelectMany(i => i.Flavours).Distinct().ToList();
+
+        List<int> Question3 = new List<int>();
+
+        foreach (var item in unicFlavs)
+        {
+            var count = awnsers.Where(i => i.Flavours.Contains(item)).Count();
+            Question3.Add(count);
+        }
+
+        ViewBag.Q3Labels = JsonConvert.SerializeObject(unicFlavs);
+        ViewBag.Q3DataPoints = JsonConvert.SerializeObject(Question3);
+
+
+        return View(awnsers);
     }
 }
 

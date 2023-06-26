@@ -1,28 +1,65 @@
 ﻿@using kodtest.Models;
 @model List<QuestionViewModel>
 
+
+@{
+    List<string> favouriteFlavours = Model.SelectMany(obj => obj.Flavours).ToList();  
+    var isCitizen = Model.Select(obj => obj.IsInSweden).ToList();
+}
+
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Tack för att du svarade!</title>
     <style>
-      
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Tack för att du svarade!</h2>
+
         <!-- Visa en bekräftelse för användaren efter att formuläret har skickats -->
 
         <h2>Alla svar</h2>
 
-        <h3>Fråga 1</h3>
-        <div style="width: 200px; height: 100px;">
-            <canvas id="question1Chart"></canvas>
-        </div>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="col-5">
+                <h3>Fråga 1</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Answer</th>
+                            <th scope="col">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in isCitizen.Distinct().ToList())
+                        {
+                            <tr>
+                                <td>
+                                    @(item.HasValue && item.Value ? "Yes" : "No")
+                                </td>
+                                <td>
+                                    @isCitizen.Count(i => i==item!.Value)
+                                </td>
+                            </tr>
+                        }
 
-        <h3>Fråga 2</h3>
-        <table>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-7" style="height:40%; width:40%">
+
+                <canvas id="question1Chart"></canvas>
+                @*<div id="chartContainer1" style="height: 370px; width: 100%;"></div>*@
+            </div>
+        </div>
+        <hr />
+        <h3>Fråga 2 </h3>
+
+        <table class="table table-striped">
             <tr>
                 <th>Svar</th>
             </tr>
@@ -33,30 +70,40 @@
                 </tr>
             }
         </table>
+        <hr />
 
-        <h3>Fråga 3</h3>
-        <table>
-            <tr>
-                <th>Svar</th>
-            </tr>
-            @{
-                var k = new List<CheckBoxItem>();
-            }
-            @foreach (var question in Model)
-            {
-                k.AddRange(question.Flavours);
-            }
+        <div class="d-flex justify-content-between align-items-center gap-4">
+            <div class="col-5">
+                <h3>Fråga 3 </h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Answer</th>
+                            <th scope="col">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in favouriteFlavours.Distinct().ToList())
+                        {
+                            <tr>
+                                <td>
+                                    @item
+                                </td>
+                                <td>
+                                    @favouriteFlavours.Count(i => i == item)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-7">
+                <canvas id="question3Chart"></canvas>
+            </div>
+        </div>
 
-            @foreach (var f in k)
-            {
-            <tr>
-                <td>@f.Title</td>
-                <td>@k.Where(i => i.Title==f.Title).ToList().Count()</td>
-            </tr>
-            }
-
-        </table>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -73,7 +120,35 @@
                 type: 'pie',
                 data: question1Data
             });
+
+            var question3Data = {
+                labels: @Html.Raw(ViewBag.Q3Labels),
+                datasets: [{
+                    data: @Html.Raw(ViewBag.Q3DataPoints),
+                    label: 'Favourite icecreams',
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(255, 159, 64, 0.5)',
+                        'rgba(255, 205, 86, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+
+                    ],
+                    borderWidth: 2
+                }],
+            };
+            var question3Chart = new Chart(document.getElementById("question3Chart"), {
+                type: 'bar',
+                data: question3Data
+            });
         });
     </script>
+
 </body>
 </html>

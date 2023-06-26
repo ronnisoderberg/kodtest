@@ -8,54 +8,75 @@
 
 <head>
     <meta name="viewport" content="width=device-width" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <title>Frågeformulär</title>
 
 
 </head>
 
-<body class="bg-gray-100">
-    <form method="post" class="max-w-md mx-auto my-8">
-        <div class="my-4">
-            <label class="block font-semibold">Bor du i Sverige?</label>
-            <div class="flex items-center">
-                <label class="inline-flex items-center">
-                    <input type="radio" asp-for="IsInSweden" value="true" class="form-radio" />
-                    <span class="ml-2">Ja</span>
-                </label>
-                <label class="inline-flex items-center ml-4">
-                    <input type="radio" asp-for="IsInSweden" value="false" class="form-radio" />
-                    <span class="ml-2">Nej</span>
-                </label>
+@*TODO: Fixa navbar för index.cshtml*@
+
+<div>
+    <div class="mx-0 mx-sm-auto">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h5 class="card-title text-white mt-2" id="exampleModalLabel">Survey</h5>
             </div>
-            <span asp-validation-for="IsInSweden" class="text-red-500"></span>
+            <div class="modal-body">
+
+                @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                {
+
+                    <p class="text-center"><strong>Är du i Sverige?:</strong></p>
+                    <div class="d-flex flex-column justify-content-center">
+                        <div class="d-flex gap-4 justify-content-center">
+
+
+                            <div class="form-check mb-2">
+                                <input type="radio" asp-for="IsInSweden" value="true" class="formRadioYes" />
+                                <label class="form-check-label" for="formRadioYes">
+                                    Ja
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" asp-for="IsInSweden" value="true" class="formRadioNo" />
+                                <label class="form-check-label" for="formRadioNo">
+                                    Nej
+                                </label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="IsInSweden" class="text-danger text-center font-weight-bold"></span>
+
+                    </div>
+
+
+                    <p class="text-center"><strong>Beskriv en god dag?</strong></p>
+
+                    <!-- Message input -->
+                    <div class="row d-flex justify-content-center">
+                        <textarea class="form-control w-50" asp-for="GoodDayDescription" id="formTextBox" rows="4"></textarea>
+
+                        <span asp-validation-for="GoodDayDescription" class="text-danger text-center font-weight-bold"></span>
+                    </div>
+                    <p class="text-center"><strong>Favouritglass?</strong></p>
+                    <div class="d-flex justify-content-center gap-4">
+
+                        @for (int i = 0; i < Model.CheckBoxes.Count; i++)
+                        {
+                            <label class="">
+                                <input type="checkbox" asp-for="@Model.CheckBoxes[i].IsChecked" class="form-checkbox" />
+                                <span class="ml-2">@Model.CheckBoxes[i].Title</span>
+                            </label>
+                            <input type="hidden" asp-for="@Model.CheckBoxes[i].Title" />
+                            <input type="hidden" asp-for="@Model.CheckBoxes[i].Id" />
+                        }
+                    </div>
+
+                    <div class="card-footer text-end mt-4">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                }
+
+            </div>
         </div>
-
-        <div class="my-4 border">
-            <label class="block font-semibold">Beskriv en bra dag:</label>
-            <textarea asp-for="GoodDayDescription" class="form-textarea border"></textarea>
-            <span asp-validation-for="GoodDayDescription" class="text-red-500"></span>
-        </div>
-
-        <div class="my-4">
-            <table>
-                <div>
-                    @for (int i = 0; i < Model.Flavours.Count; i++)
-                    {
-                        <label class="flex items-center">
-                            <input type="checkbox" asp-for="@Model.Flavours[i].IsChecked" class="form-checkbox" />
-                            <span class="ml-2">@Model.Flavours[i].Title</span>
-                        </label>
-                        <input type="hidden" asp-for="@Model.Flavours[i].Title" />
-                        <input type="hidden" asp-for="@Model.Flavours[i].Id" />
-                    }
-                </div>
-            </table>
-        </div>
-
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Skicka</button>
-    </form>
-<script src="https://cdn.tailwindcss.com"></script>
-</body>
-
-</html>
+    </div>
+</div>
